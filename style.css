@@ -20,8 +20,30 @@ body {
 .header {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    margin-bottom: 2rem;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.mode-selector {
+    margin-bottom: 10px;
+}
+
+#game-mode {
+    background: #8f7a66;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    text-transform: lowercase;
+}
+
+#game-mode:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(143, 122, 102, 0.5);
 }
 
 h1 {
@@ -87,26 +109,36 @@ h1 {
 }
 
 .game-container {
+    position: relative;
     background: #bbada0;
     padding: 15px;
     border-radius: 6px;
-    position: relative;
-    box-sizing: border-box;
+    width: min(95vw, 500px);
+    margin: 0 auto;
+}
+
+.game-container.expanded {
+    width: min(95vw, 800px);
 }
 
 .grid-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 15px;
     position: relative;
-    box-sizing: border-box;
+    background: #bbada0;
+    border-radius: 6px;
+    width: 500px;
+    height: 500px;
+    padding: var(--grid-gap);
+    display: grid;
+    grid-template-columns: repeat(var(--grid-size), 1fr);
+    grid-template-rows: repeat(var(--grid-size), 1fr);
+    gap: var(--grid-gap);
 }
 
 .grid-cell {
     background: rgba(238, 228, 218, 0.35);
-    aspect-ratio: 1;
     border-radius: 3px;
-    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
 }
 
 .tile {
@@ -114,19 +146,52 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2rem;
-    font-weight: bold;
+    width: var(--cell-size);
+    height: var(--cell-size);
     background: #eee4da;
     border-radius: 3px;
+    font-weight: bold;
+    font-size: 2rem;
+    transform: translate(0, 0);
     transition: all 0.15s ease-in-out;
-    z-index: 1;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+    z-index: 2;
 }
 
-.tile.new {
-    animation: appear 0.2s ease-in-out;
+.expanded .tile {
+    font-size: 1.5rem;
+}
+
+.expanded .tile.tile-512,
+.expanded .tile.tile-1024,
+.expanded .tile.tile-2048 {
+    font-size: 1.2rem;
+}
+
+.grid-container.expanded {
+    --grid-size: 8;
+}
+
+.grid-container.classic,
+.grid-container.gravity,
+.grid-container.reverse {
+    --grid-size: 4;
+}
+
+@media (max-width: 520px) {
+    .grid-container {
+        width: 95vw;
+        height: 95vw;
+        max-width: 500px;
+        max-height: 500px;
+    }
+}
+
+.gravity .tile {
+    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.gravity .tile.falling {
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 @keyframes appear {
@@ -134,9 +199,24 @@ h1 {
         opacity: 0;
         transform: scale(0);
     }
-
+    50% {
+        opacity: 0.5;
+        transform: scale(1.1);
+    }
     100% {
         opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes pop {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
         transform: scale(1);
     }
 }
@@ -202,6 +282,74 @@ h1 {
     font-size: 1.5rem;
     animation: victory-pulse 1s ease-in-out infinite;
 }
+
+/* Mode-specific styles */
+.reverse .tile {
+    transition: transform 100ms ease-in-out, background-color 100ms ease-in-out;
+}
+
+.reverse .tile-1024 {
+    background: #3c3a32;
+    color: #f9f6f2;
+}
+
+.reverse .tile-512 {
+    background: #edc22e;
+    color: #f9f6f2;
+}
+
+.reverse .tile-256 {
+    background: #edcc61;
+    color: #f9f6f2;
+}
+
+.reverse .tile-128 {
+    background: #edcf72;
+    color: #f9f6f2;
+}
+
+.reverse .tile-64 {
+    background: #f65e3b;
+    color: #f9f6f2;
+}
+
+.reverse .tile-32 {
+    background: #f67c5f;
+    color: #f9f6f2;
+}
+
+.reverse .tile-16 {
+    background: #f59563;
+    color: #f9f6f2;
+}
+
+.reverse .tile-8 {
+    background: #f2b179;
+    color: #f9f6f2;
+}
+
+.reverse .tile-4 {
+    background: #ede0c8;
+    color: #776e65;
+}
+
+.reverse .tile-2 {
+    background: #eee4da;
+    color: #776e65;
+}
+
+.reverse .tile-1 {
+    background: gold;
+    color: #776e65;
+    animation: victory-pulse 1s infinite;
+}
+
+@keyframes victory-pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
 
 .modal {
     display: none;
@@ -278,21 +426,4 @@ h1 {
 
 .modal-buttons button:hover {
     background: #7f6a56;
-}
-
-@keyframes victory-pulse {
-    0% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(237, 194, 46, 0.4);
-    }
-
-    50% {
-        transform: scale(1.05);
-        box-shadow: 0 0 20px 10px rgba(237, 194, 46, 0.2);
-    }
-
-    100% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(237, 194, 46, 0.4);
-    }
 }

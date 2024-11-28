@@ -10,6 +10,14 @@
     <div class="container">
         <div class="header">
             <h1>2048</h1>
+            <div class="mode-selector">
+                <select id="game-mode">
+                    <option selected value="classic">classic (4x4)</option>
+                    <option value="expanded">expanded (8x8)</option>
+                    <option value="gravity">Gravity Mode (4x4)</option>
+                    <option value="reverse">Reverse Mode (4x4)</option>
+                </select>
+            </div>
             <div class="scores">
                 <div class="score-box">
                     <span>score</span>
@@ -36,18 +44,16 @@
             <h2>victory!</h2>
             <p>congratulations! you've reached 2048!</p>
             <div class="modal-buttons">
-                <button id="keep-playing">keep playing</button>
                 <button id="new-game-victory">new game</button>
             </div>
         </div>
     </div>
-    <div id="gameover-modal" class="modal">
+    <div id="game-over-modal" class="modal">
         <div class="modal-content">
             <h2>game over!</h2>
-            <p>final score: <span id="final-score">0</span></p>
-            <p>best score: <span id="final-best-score">0</span></p>
+            <p>try again to reach 2048!</p>
             <div class="modal-buttons">
-                <button id="new-game-loss">try again</button>
+                <button id="new-game-over">new game</button>
             </div>
         </div>
     </div>
