@@ -61,7 +61,8 @@ h1 {
     gap: 10px;
 }
 
-#new-game, #ai-play {
+#new-game,
+#ai-play {
     background: #8f7a66;
     color: white;
     border: none;
@@ -72,7 +73,8 @@ h1 {
     transition: background-color 0.2s;
 }
 
-#new-game:hover, #ai-play:hover {
+#new-game:hover,
+#ai-play:hover {
     background: #7f6a56;
 }
 
@@ -132,6 +134,7 @@ h1 {
         opacity: 0;
         transform: scale(0);
     }
+
     100% {
         opacity: 1;
         transform: scale(1);
@@ -139,19 +142,63 @@ h1 {
 }
 
 /* Tile colors */
-.tile-2 { background: #eee4da; color: #776e65; }
-.tile-4 { background: #ede0c8; color: #776e65; }
-.tile-8 { background: #f2b179; color: #f9f6f2; }
-.tile-16 { background: #f59563; color: #f9f6f2; }
-.tile-32 { background: #f67c5f; color: #f9f6f2; }
-.tile-64 { background: #f65e3b; color: #f9f6f2; }
-.tile-128 { background: #edcf72; color: #f9f6f2; font-size: 1.8rem; }
-.tile-256 { background: #edcc61; color: #f9f6f2; font-size: 1.8rem; }
-.tile-512 { background: #edc850; color: #f9f6f2; font-size: 1.8rem; }
-.tile-1024 { background: #edc53f; color: #f9f6f2; font-size: 1.5rem; }
-.tile-2048 { 
-    background: #edc22e; 
-    color: #f9f6f2; 
+.tile-2 {
+    background: #eee4da;
+    color: #776e65;
+}
+
+.tile-4 {
+    background: #ede0c8;
+    color: #776e65;
+}
+
+.tile-8 {
+    background: #f2b179;
+    color: #f9f6f2;
+}
+
+.tile-16 {
+    background: #f59563;
+    color: #f9f6f2;
+}
+
+.tile-32 {
+    background: #f67c5f;
+    color: #f9f6f2;
+}
+
+.tile-64 {
+    background: #f65e3b;
+    color: #f9f6f2;
+}
+
+.tile-128 {
+    background: #edcf72;
+    color: #f9f6f2;
+    font-size: 1.8rem;
+}
+
+.tile-256 {
+    background: #edcc61;
+    color: #f9f6f2;
+    font-size: 1.8rem;
+}
+
+.tile-512 {
+    background: #edc850;
+    color: #f9f6f2;
+    font-size: 1.8rem;
+}
+
+.tile-1024 {
+    background: #edc53f;
+    color: #f9f6f2;
+    font-size: 1.5rem;
+}
+
+.tile-2048 {
+    background: #edc22e;
+    color: #f9f6f2;
     font-size: 1.5rem;
     animation: victory-pulse 1s ease-in-out infinite;
 }
@@ -238,10 +285,12 @@ h1 {
         transform: scale(1);
         box-shadow: 0 0 0 0 rgba(237, 194, 46, 0.4);
     }
+
     50% {
         transform: scale(1.05);
         box-shadow: 0 0 20px 10px rgba(237, 194, 46, 0.2);
     }
+
     100% {
         transform: scale(1);
         box-shadow: 0 0 0 0 rgba(237, 194, 46, 0.4);

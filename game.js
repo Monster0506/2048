@@ -24,7 +24,7 @@ class Game2048 {
         // Calculate tile size based on container width
         const containerWidth = this.gridContainer.clientWidth;
         const tileSize = (containerWidth - (this.gridSize + 1) * 15) / this.gridSize;
-        
+
         // Create grid cells
         for (let i = 0; i < this.gridSize * this.gridSize; i++) {
             const cell = document.createElement('div');
@@ -176,14 +176,14 @@ class Game2048 {
                     const positions = this.findFarthestPosition(cell, vector);
                     const next = positions.next;
 
-                    if (this.withinBounds(next) && 
-                        this.grid[next.x][next.y] === tile && 
+                    if (this.withinBounds(next) &&
+                        this.grid[next.x][next.y] === tile &&
                         !this.mergedTiles.has(`${next.x}-${next.y}`)) {
                         // Merge tiles
                         const newValue = tile * 2;
                         this.grid[next.x][next.y] = newValue;
                         this.grid[x][y] = 0;
-                        
+
                         // Check for victory
                         if (newValue === 2048 && !this.hasWon) {
                             setTimeout(() => this.showVictoryModal(), 300);
@@ -191,7 +191,7 @@ class Game2048 {
 
                         // Mark as merged
                         this.mergedTiles.add(`${next.x}-${next.y}`);
-                        
+
                         // Update score
                         this.score += newValue;
                         if (this.score > this.bestScore) {
@@ -273,7 +273,7 @@ class Game2048 {
 
     withinBounds(position) {
         return position.x >= 0 && position.x < this.gridSize &&
-               position.y >= 0 && position.y < this.gridSize;
+            position.y >= 0 && position.y < this.gridSize;
     }
 
     moveTileElement(tile, newX, newY) {
@@ -336,7 +336,7 @@ class Game2048 {
         for (const direction of directions) {
             const gridCopy = this.grid.map(row => [...row]);
             const result = this.simulateMove(direction, gridCopy);
-            
+
             if (result.moved) {
                 // Add a random tile for simulation
                 const score = this.minimaxWithChance(result.grid, this.searchDepth, false);
@@ -358,32 +358,32 @@ class Game2048 {
         if (maximizingPlayer) {
             let maxScore = -Infinity;
             const directions = ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft'];
-            
+
             for (const direction of directions) {
                 const gridCopy = grid.map(row => [...row]);
                 const result = this.simulateMove(direction, gridCopy);
-                
+
                 if (result.moved) {
                     const score = this.minimaxWithChance(result.grid, depth - 1, false);
                     maxScore = Math.max(maxScore, score);
                 }
             }
-            
+
             return maxScore === -Infinity ? this.evaluatePosition(grid) : maxScore;
         } else {
             // Chance node: simulate random tile spawns
             let totalScore = 0;
             let emptyCells = [];
-            
+
             // Find empty cells
             for (let i = 0; i < this.gridSize; i++) {
                 for (let j = 0; j < this.gridSize; j++) {
                     if (grid[i][j] === 0) {
-                        emptyCells.push({x: i, y: j});
+                        emptyCells.push({ x: i, y: j });
                     }
                 }
             }
-            
+
             if (emptyCells.length === 0) {
                 return this.evaluatePosition(grid);
             }
@@ -391,7 +391,7 @@ class Game2048 {
             // Sample a subset of empty cells for performance
             const sampleSize = Math.min(3, emptyCells.length);
             const sampledCells = this.sampleCells(emptyCells, sampleSize);
-            
+
             // Try both 2 and 4 tiles in sampled positions
             for (const cell of sampledCells) {
                 for (const value of [2, 4]) {
@@ -401,7 +401,7 @@ class Game2048 {
                     totalScore += probability * this.minimaxWithChance(gridCopy, depth - 1, true);
                 }
             }
-            
+
             return totalScore / (sampledCells.length * 2);
         }
     }
@@ -451,15 +451,15 @@ class Game2048 {
                     const nextX = newX + vector.x;
                     const nextY = newY + vector.y;
 
-                    if (nextX < 0 || nextX >= this.gridSize || 
+                    if (nextX < 0 || nextX >= this.gridSize ||
                         nextY < 0 || nextY >= this.gridSize) break;
 
                     if (grid[nextX][nextY] === 0) {
                         newX = nextX;
                         newY = nextY;
                         moved = true;
-                    } else if (grid[nextX][nextY] === value && 
-                             !mergedPositions.has(`${nextX}-${nextY}`)) {
+                    } else if (grid[nextX][nextY] === value &&
+                        !mergedPositions.has(`${nextX}-${nextY}`)) {
                         newX = nextX;
                         newY = nextY;
                         moved = true;
@@ -534,7 +534,7 @@ class Game2048 {
         // Maximum tile value and position
         const maxValue = Math.max(...grid.flat());
         let cornerMax = 0;
-        const corners = [{x: 0, y: 0}, {x: 0, y: 3}, {x: 3, y: 0}, {x: 3, y: 3}];
+        const corners = [{ x: 0, y: 0 }, { x: 0, y: 3 }, { x: 3, y: 0 }, { x: 3, y: 3 }];
         for (const corner of corners) {
             if (grid[corner.x][corner.y] === maxValue) {
                 cornerMax = maxValue;
