@@ -15,7 +15,7 @@ class Game2048 {
         this.gameOver = false;
         this.hasWon = false;
         this.isAIPlaying = false;
-        this.aiDelay = 150;
+        this.aiDelay = 50;
         
         // Force select classic mode in dropdown
         this.modeSelector.value = 'classic';
@@ -62,18 +62,26 @@ class Game2048 {
     }
 
     async makeAIMove() {
-        while (this.isAIPlaying && !this.gameOver) {
-            const move = this.findBestMove();
-            if (move) {
-                this.move(move);
-                await new Promise(resolve => setTimeout(resolve, this.aiDelay));
+        if (!this.isAIPlaying || this.gameOver) return;
+
+        const bestMove = this.findBestMove();
+        if (bestMove) {
+            // In reverse mode, invert the AI's chosen direction
+            if (this.mode === 'reverse') {
+                const reverseMap = {
+                    'ArrowUp': 'ArrowDown',
+                    'ArrowDown': 'ArrowUp',
+                    'ArrowLeft': 'ArrowRight',
+                    'ArrowRight': 'ArrowLeft'
+                };
+                this.move(reverseMap[bestMove] || bestMove);
             } else {
-                this.isAIPlaying = false;
-                const aiButton = document.getElementById('ai-play');
-                aiButton.textContent = 'Let AI Play';
-                aiButton.classList.remove('playing');
-                break;
+                this.move(bestMove);
             }
+        }
+
+        if (this.isAIPlaying && !this.gameOver) {
+            setTimeout(() => this.makeAIMove(), this.aiDelay);
         }
     }
 
@@ -493,6 +501,17 @@ class Game2048 {
 
     move(direction) {
         if (this.gameOver) return;
+
+        // In reverse mode, invert the direction
+        if (this.mode === 'reverse') {
+            const reverseMap = {
+                'ArrowUp': 'ArrowDown',
+                'ArrowDown': 'ArrowUp',
+                'ArrowLeft': 'ArrowRight',
+                'ArrowRight': 'ArrowLeft'
+            };
+            direction = reverseMap[direction] || direction;
+        }
 
         const vector = this.getVector(direction);
         if (!vector) return;  // Invalid direction
